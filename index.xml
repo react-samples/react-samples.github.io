@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nakano Hitoshiについて</title>
+    <link>https://www.n0l.site/</link>
+    <description>Recent content on Nakano Hitoshiについて</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 09 Jul 2018 21:16:23 +0900</lastBuildDate>
+    
+	<atom:link href="https://www.n0l.site/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hello World Hugo</title>
+      <link>https://www.n0l.site/blog/hello-world-hugo/</link>
+      <pubDate>Mon, 09 Jul 2018 21:16:23 +0900</pubDate>
+      
+      <guid>https://www.n0l.site/blog/hello-world-hugo/</guid>
+      <description> Hugoを初めて触ってみました </description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://www.n0l.site/about/</link>
+      <pubDate>Mon, 09 Jul 2018 21:05:15 +0900</pubDate>
+      
+      <guid>https://www.n0l.site/about/</guid>
+      <description>自己紹介 中野仁はアプリ開発者です。</description>
+    </item>
+    
+  </channel>
+</rss>

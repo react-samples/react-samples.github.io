@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>{{.Title}}</title>
+    <meta name="description" content="{{.Title}} | {{add .Cursor 1 }}位 〜 {{add .Cursor .Limit}}位 | 動画再生数・推定収入・チャンネル登録者数の変化をグラフにまとめました" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content="{{.Title}}"/>
+    <meta property="og:site_name" content="人気YouTuberランキング" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://2.bp.blogspot.com/-M4Pbbph8cEc/WtMwiYjJGkI/AAAAAAAAAAg/1HCtcWl7vP44n514K-vl7BHdnlNzdqydgCLcBGAs/s1600/banner.png">
+    <meta property="og:url" content="https://utuber.fun/" />
+    <meta property="og:description" content="{{.Title}} |  {{add .Cursor 1 }}位 〜 {{add .Cursor .Limit}}位  | 動画再生数・推定収入・チャンネル登録者数の変化をグラフにまとめました"/>
+
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@UTuber_rank">
+    <meta name="twitter:image" content="https://2.bp.blogspot.com/-M4Pbbph8cEc/WtMwiYjJGkI/AAAAAAAAAAg/1HCtcWl7vP44n514K-vl7BHdnlNzdqydgCLcBGAs/s1600/banner.png"/>
+    <meta name="twitter:description" content="">
+    {{template "header.html"}}
+  </head>
+  <body>
+    {{template "navbar.html" .Title}}
+    <div class="container" style="margin-top:92px">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-12 col-md-9">
+          <!--
+          <ul class="nav nav-tabs" style="margin:24px 0 32px 0;">
+
+            <li class="nav-item">
+              {{ if eq .QueryName "" }}
+              <a class="nav-link active" href="{{.Path}}">1時間</a>
+              {{else}}
+              <a class="nav-link" href="{{.Path}}">1時間</a>
+              {{end}}
+            </li>
+
+            <li class="nav-item">
+              {{ if eq .QueryName "daily" }}
+              <a class="nav-link active" href="{{.Path}}?interval=daily">1日</a>
+              {{else}}
+              <a class="nav-link" href="{{.Path}}?interval=daily">1日</a>
+              {{end}}
+            </li>
+            <li class="nav-item">
+              {{ if eq .QueryName "monthly" }}
+              <a class="nav-link active" href="{{.Path}}?interval=monthly">1ヶ月</a>
+              {{else}}
+              <a class="nav-link" href="{{.Path}}?interval=monthly">1ヶ月</a>
+              {{end}}
+
+            </li>
+
+          </ul>
+        -->
+          <h2>{{.Title}} |  {{add .Cursor 1 }}位 〜 {{add .Cursor .Limit}}位</h2>
+          <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>ランク</th>
+                    <th></th>
+                    <th>名前</th>
+                    <th>動画再生数
+                      <a style="font-size:10px;margin-left:8px" href="/realtime/category/{{.Category}}/dimension/pageview">急上昇</a>
+                    </th>
+                    <th>収入 <a href="#foot-note-1">*1</a>
+                      <a style="font-size:10px;margin-left:8px" href="/realtime/category/{{.Category}}/dimension/pageview">急上昇</a>
+                    </th>
+                    <th><a href="{{.Path}}?sort=subscriber">チャンネル登録者数<a style="font-size:10px;margin-left:8px" href="/realtime/category/{{.Category}}/dimension/subscriber">急上昇</a></th>
+                    <!--<th>投稿動画数</th>-->
+                  </tr>
+                </thead>
+                <tbody>
+                  {{range .YouTubers}}
+                  <tr>
+                    <td>
+                      {{.YouTuberStat.Rank}}
+                      {{ if gt .YouTuberStat.Rank_Diff 0}}
+
+                      <div class="table-up-number"><i class="fas fa-arrow-up table-up-icon"></i>{{.YouTuberStat.Rank_Diff}}</div>
+                      {{ else if eq .YouTuberStat.Rank_Diff 0 }}
+                      <div class="table-flat-number"><i class="fas fa-arrow-left table-flat-icon"></i>{{.YouTuberStat.Rank_Diff}}</div>
+                      {{else}}
+                      <div class="table-down-number"><i class="fas fa-arrow-down table-down-icon"></i>{{.YouTuberStat.Rank_Diff}}</div>
+                      {{end}}
+                    </td>
+                    <td>
+                      <a href="/youtuber/{{.User_Id}}">
+                        <img style="height:64px;width:64px;margin:0 8px;border-radius:4px" src="{{.Thumbnail_Url}}"/>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="/youtuber/{{.User_Id}}">
+                         {{.Name}}
+                      </a>
+                    </td>
+                    <td>
+                      {{beautifyIntToString .YouTuberStat.Pageview_Count}}回
+
+                      <div class="table-up-number">
+                        <i class="fas fa-arrow-up table-up-icon"></i>
+                        {{beautifyIntToString .YouTuberStat.Pageview_Count_Diff}}回
+                      </div>
+                    </td>
+                    <td>{{.YouTuberStat.Revenue}}
+                      <div class="table-up-number"><i class="fas fa-arrow-up table-up-icon"></i>{{.YouTuberStat.Revenue_Diff}}</div>
+                    </td>
+                    <td>{{beautifyIntToString .YouTuberStat.Subscriber_Count}}人
+                      {{ if gt .YouTuberStat.Subscriber_Count_Diff 0}}
+                      <div class="table-up-number"><i class="fas fa-arrow-up table-up-icon"></i>{{beautifyIntToString .YouTuberStat.Subscriber_Count_Diff}}人</div>
+                      {{ else if eq .YouTuberStat.Subscriber_Count_Diff 0 }}
+                      <i class="fas fa-arrow-left table-flat-icon"></i>
+                      <div class="table-flat-number">{{beautifyIntToString .YouTuberStat.Subscriber_Count_Diff}}人</div>
+                      {{else}}
+                      <div class="table-down-number"><i class="fas fa-arrow-down table-down-icon"></i>{{beautifyIntToString .YouTuberStat.Subscriber_Count_Diff}}人</div>
+                      {{end}}
+                    </td>
+                    <!--
+                    <td>{{.YouTuberStat.Video_Count}}
+
+                      <div class="table-up-number"><i class="fas fa-arrow-up table-up-icon"></i>{{.YouTuberStat.Video_Count_Diff}}</div>
+                    </td>
+                  -->
+                  </tr>
+                  {{end}}
+                </tbody>
+              </table>
+          </div>
+          <div>
+            {{if gt .Limit (len .YouTubers) }}
+            {{else}}
+            <a href="{{.Path}}?skip={{.Skip}}&limit={{.Limit}}" class="btn btn-primary btn-lg btn-block">{{add3 .Cursor .Limit 1 }}位 〜 {{add3 .Cursor .Limit .Limit }}位をみる</a>
+            {{end}}
+          </div>
+        </div>
+        {{template "sidebar.html" .Title}}
+      </div>
+    </div>
+    <footer class="bd-footer text-muted">
+
+  <div class="container-fluid p-3 p-md-5">
+    <p class="text-muted" id="foot-note-1">*1 動画再生数１回あたり0.5円の広告収入とした場合の推定</p>
+    <p>© 2018 YouTuberランキング</p>
+  </div>
+</footer>
+
+
+
+  </body>
+
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+</html>
